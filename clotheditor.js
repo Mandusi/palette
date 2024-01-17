@@ -27,6 +27,7 @@ export default class ClothEditor {
 
     this.positionRatioY = this.product.canvas.y0 / this.product.height
     this.positionRatioX = this.product.canvas.x0 / this.product.width
+
     // CREATE CANVAS ELEMENT
     this.canvasContainer = document.createElement('div')
     this.canvasContainer.setAttribute('id', 'canvas-container-wrapper')
@@ -34,17 +35,12 @@ export default class ClothEditor {
     this.canvasContainer.append(this.canvasEl)
     this.mainContainer.append(this.canvasContainer)
 
-    this.clientPosition = {
-      x: this.product.canvas.x0 * this.prodCanvasRatio,
-      y: this.product.canvas.y0 * this.prodCanvasRatio,
-    }
-
     this.canvasHeight = this.productImg.clientHeight / this.prodCanvasRatio
     this.canvasWidth = this.canvasHeight / this.canvasHWRatio
 
-    console.log(this.productImg.clientWidth, this.productImg.clientHeight)
+    // INITIALIZE FABRIC CANVAS
     this.productImg.onload = this.createCanvas.bind(this)
-    window.onresize = this.resizeWrapper.bind(this)
+    window.onresize = this.resizeCanvas.bind(this)
   }
 
   createCanvas() {
@@ -66,7 +62,7 @@ export default class ClothEditor {
     const text = new window.fabric.Text('text')
     this.canvas.add(text)
   }
-  resizeWrapper() {
+  resizeCanvas() {
     const imgHeight = document.getElementById('product-img').clientHeight
     this.canvasHeight = imgHeight / this.prodCanvasRatio
     this.canvasWidth = this.canvasHeight / this.canvasHWRatio
@@ -85,6 +81,5 @@ export default class ClothEditor {
       top: ${this.productImg.clientHeight * this.positionRatioY}px;
       left: ${this.productImg.clientWidth * this.positionRatio}px;
   }`
-    console.log(this.productImg.clientWidth, this.productImg.clientHeight)
   }
 }
