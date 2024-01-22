@@ -4,9 +4,9 @@ export default class TextController {
   constructor(canvas) {
     this.canvas = canvas
     this.textControllerContainer = document.createElement('div')
-    this.textControllerContainer.setAttribute('id', 'controller-container')
+    this.textControllerContainer.setAttribute('id', 'mir-controller-container')
     const mainContainerWrapper = document.getElementById(
-      'main-container-wrapper'
+      'mir-main-container-wrapper'
     )
     mainContainerWrapper.append(this.textControllerContainer)
 
@@ -20,8 +20,15 @@ export default class TextController {
     this.btnItalic = this.createButton('italic', icons.italic)
     this.btnUnderline = this.createButton('underline', icons.underline)
     this.btnStrike = this.createButton('strikethrough', icons.strikethrough)
-    this.btnFlipHor = this.createButton('flip-horizontal', icons.flipHorizontal)
-    this.btnFlipVer = this.createButton('flip-vertical', icons.flipVertical)
+    this.btnFlipX = this.createButton('flip-horizontal', icons.flipHorizontal)
+    this.btnFlipY = this.createButton('flip-vertical', icons.flipVertical)
+    this.btnLayerDown = this.createButton('layer-down', icons.layerDown)
+    this.btnLayerUp = this.createButton('layer-up', icons.layerUp)
+    this.btnCenterY = this.createButton(
+      'center-horizontal',
+      icons.centerHorizantal
+    )
+    this.btnCenterX = this.createButton('center-vertical', icons.centerVertical)
 
     // BUTTON HANDLERS
     this.btnAlign.addEventListener('click', () => this.editText('align'))
@@ -31,17 +38,26 @@ export default class TextController {
       this.editText('underline')
     )
     this.btnStrike.addEventListener('click', () => this.editText('strike'))
-    this.btnFlipHor.addEventListener('click', () => this.editText('flipX'))
-    this.btnFlipVer.addEventListener('click', () => this.editText('flipY'))
+    this.btnFlipX.addEventListener('click', () => this.editText('flipX'))
+    this.btnFlipY.addEventListener('click', () => this.editText('flipY'))
+    this.btnCenterX.addEventListener('click', () => this.editText('centerX'))
+    this.btnCenterY.addEventListener('click', () => this.editText('centerY'))
+    this.btnLayerDown.addEventListener('click', () =>
+      this.editText('layerDown')
+    )
+    this.btnLayerUp.addEventListener('click', () => this.editText('layerUp'))
+
+    // this.colorPicker = new window.iro.ColorPicker('#mir-main-container')
   }
 
   createButton(id, icon) {
-    const button = document.createElement('button')
-    button.setAttribute('class', 'button')
-    button.setAttribute('id', `${id}-btn`)
-    button.innerHTML = icon
-    this.textControllerContainer.append(button)
-    return button
+    this.button = document.createElement('button')
+    this.button.setAttribute('class', 'mir-button')
+    this.button.setAttribute('id', `mir-${id}-btn`)
+    this.button.innerHTML = icon
+    this.textControllerContainer.append(this.button)
+    this.activeBtnHandler()
+    return this.button
   }
 
   editText(action) {
@@ -49,33 +65,47 @@ export default class TextController {
 
     switch (action) {
       case 'italic':
-        const isItalic = this.getStyle(text, 'fontStyle') === 'italic'
-        this.setStyle(text, 'fontStyle', isItalic ? 'normal' : 'italic')
+        const isItalic = text.fontStyle === 'italic'
+        text.set('fontStyle', isItalic ? 'normal' : 'italic')
         break
 
       case 'bold':
-        const isBold = this.getStyle(text, 'fontWeight') === 'bold'
-        this.setStyle(text, 'fontWeight', isBold ? 'normal' : 'bold')
+        const isBold = text.fontWeight === 'bold'
+        text.set('fontWeight', isBold ? 'normal' : 'bold')
         break
 
       case 'underline':
-        const isUnderline = this.getStyle(text, 'underline') === true
-        this.setStyle(text, 'underline', isUnderline ? false : true)
+        const isUnderline = text.underline === true
+        text.set('underline', isUnderline ? false : true)
         break
 
       case 'strike':
-        const isStrike = this.getStyle(text, 'linethrough') === true
-        this.setStyle(text, 'linethrough', isStrike ? false : true)
+        const isStrike = text.linethrough === true
+        text.set('linethrough', isStrike ? false : true)
         break
 
       case 'flipX':
         text.flipX = text.flipX === true ? false : true
-        this.canvas.renderAll()
         break
 
       case 'flipY':
         text.flipY = text.flipY === true ? false : true
-        this.canvas.renderAll()
+        break
+
+      case 'layerDown':
+        this.canvas.sendToBack(text)
+        break
+
+      case 'layerUp':
+        this.canvas.bringToFront(text)
+        break
+
+      case 'centerX':
+        text.centerH()
+        break
+
+      case 'centerY':
+        text.centerV()
         break
 
       case 'align':
@@ -95,17 +125,28 @@ export default class TextController {
             this.btnAlign.innerHTML = icons.alignleft
             break
         }
-        this.canvas.renderAll()
         break
     }
-  }
-
-  getStyle(object, styleName) {
-    return object[styleName]
-  }
-
-  setStyle(object, styleName, value) {
-    object.set(styleName, value)
     this.canvas.renderAll()
+    this.activeBtnHandler()
+  }
+
+  activeBtnHandler() {
+    const text = this.canvas.getActiveObject()
+
+    function isActive(btn, active) {
+      btn
+        ?.querySelectorAll('path')
+        .forEach((path) =>
+          path.setAttribute('stroke', active ? '#7929DE' : 'black')
+        )
+    }
+
+    isActive(this.btnBold, text.fontWeight === 'bold')
+    isActive(this.btnItalic, text.fontStyle === 'italic')
+    isActive(this.btnUnderline, text.underline === true)
+    isActive(this.btnStrike, text.linethrough === true)
+    isActive(this.btnFlipX, text.flipX === true)
+    isActive(this.btnFlipY, text.flipY === true)
   }
 }

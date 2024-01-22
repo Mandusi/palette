@@ -9,7 +9,7 @@ const product = {
   canvas: {
     x0: 210,
     y0: 250,
-    x1: 620,
+    x1: 620,  
     y1: 865,
   },
 }

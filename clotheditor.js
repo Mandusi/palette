@@ -7,22 +7,22 @@ export default class ClothEditor {
 
     // MAIN DIV ELEMENT
     this.mainContainerWrapper = document.createElement('div')
-    this.mainContainerWrapper.setAttribute('id', 'main-container-wrapper')
+    this.mainContainerWrapper.setAttribute('id', 'mir-main-container-wrapper')
     this.root.append(this.mainContainerWrapper)
 
     this.mainContainer = document.createElement('div')
-    this.mainContainer.setAttribute('id', 'main-container')
+    this.mainContainer.setAttribute('id', 'mir-main-container')
     this.mainContainerWrapper.append(this.mainContainer)
 
     // PRODUCT IMAGE ELEMENT
     this.productImg = document.createElement('img')
     this.productImg.setAttribute('src', this.product.src)
-    this.productImg.setAttribute('id', 'product-img')
+    this.productImg.setAttribute('id', 'mir-product-img')
     this.mainContainer.append(this.productImg)
 
     // CREATE CANVAS ELEMENT
     this.canvasContainer = document.createElement('div')
-    this.canvasContainer.setAttribute('id', 'canvas-container-wrapper')
+    this.canvasContainer.setAttribute('id', 'mir-canvas-container-wrapper')
     this.mainContainer.append(this.canvasContainer)
     this.canvasEl = document.createElement('canvas')
     this.canvasContainer.append(this.canvasEl)
@@ -38,11 +38,16 @@ export default class ClothEditor {
     this.positionRatioY = this.product.canvas.y0 / this.product.height
     this.positionRatioX = this.product.canvas.x0 / this.product.width
 
-    this.canvasHeight = this.productImg.clientHeight / this.prodCanvasRatio
-    this.canvasWidth = this.canvasHeight / this.canvasHWRatio
+    this.canvasHeight = Math.round(
+      this.productImg.clientHeight / this.prodCanvasRatio
+    )
+    this.canvasWidth = Math.round(this.canvasHeight / this.canvasHWRatio)
 
     // INITIALIZE FABRIC CANVAS
-    this.canvas = new window.fabric.Canvas(this.canvasEl)
+    this.canvas = new window.fabric.Canvas(this.canvasEl, {
+      selectionBorderColor: '#7929DE',
+      color: '#7929DE',
+    })
     this.productImg.onload = this.createCanvas.bind(this)
     window.onresize = this.resizeCanvas.bind(this)
 
@@ -60,31 +65,39 @@ export default class ClothEditor {
 
     this.style = document.createElement('style')
     document.body.append(this.style)
-    this.style.innerText = `#canvas-container-wrapper {
+    this.style.innerText = `#mir-canvas-container-wrapper {
         height: ${this.canvasHeight}px;
         width: ${this.canvasWidth}px;
         top: ${this.productImg.clientHeight * this.positionRatioY}px;
         left: ${this.productImg.clientWidth * this.positionRatioX}px;
       }`
 
+    // CREATE TEXT OBJECT
     const text = new window.fabric.Textbox('selmam <3')
-    text.fontWeight = 'bold'
+    text.set({
+      borderColor: '#7929DE',
+      transparentCorners: false,
+      cornerColor: '#7929DE',
+      cornerStyle: 'circle',
+      cornerSize: 10,
+    })
+
     const img = new window.fabric.Image.fromURL(
       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/2048px-Instagram_logo_2022.svg.png',
       function (img) {
         img.scaleToHeight(50)
         this.canvas.centerObject(img)
         this.canvas.add(img)
+        img.cornerColor = '#DDD'
       }.bind(this)
     )
     this.canvas.add(text)
-    console.log()
   }
 
   resizeCanvas() {
-    const imgHeight = document.getElementById('product-img').clientHeight
-    this.canvasHeight = imgHeight / this.prodCanvasRatio
-    this.canvasWidth = this.canvasHeight / this.canvasHWRatio
+    const imgHeight = document.getElementById('mir-product-img').clientHeight
+    this.canvasHeight = Math.round(imgHeight / this.prodCanvasRatio)
+    this.canvasWidth = Math.round(this.canvasHeight / this.canvasHWRatio)
 
     const scale = this.canvasWidth / this.canvas.getWidth()
     const zoom = this.canvas.getZoom() * scale
@@ -94,7 +107,7 @@ export default class ClothEditor {
       width: this.canvasWidth,
     })
 
-    this.style.innerText = `#canvas-container-wrapper {
+    this.style.innerText = `#mir-canvas-container-wrapper {
       height: ${this.canvasHeight}px;
       width: ${this.canvasWidth}px;
       top: ${this.productImg.clientHeight * this.positionRatioY}px;
@@ -102,7 +115,7 @@ export default class ClothEditor {
   }`
   }
 
-  selectionHandler(s) {
+  selectionHandler() {
     this.removeController()
     if (this.canvas.getActiveObject().type === 'textbox') {
       this.controller = new TextController(this.canvas)
@@ -110,7 +123,7 @@ export default class ClothEditor {
   }
 
   removeController() {
-    const controllerEl = document.getElementById('controller-container')
+    const controllerEl = document.getElementById('mir-controller-container')
     if (controllerEl) this.mainContainerWrapper.removeChild(controllerEl)
   }
 }
