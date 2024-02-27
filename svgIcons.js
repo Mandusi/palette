@@ -5,10 +5,10 @@ export const icons = {
   <rect x="3.04762" y="24.381" width="25.9048" height="5.33333" rx="2.66667" fill="black"/>
   </svg>
   `,
-  highlighter: `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  highlight: `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M14.4762 12.1904L8.38095 18.2857V21.3333H17.5238L20.5714 18.2857" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M27.4286 13.2002L22.9052 17.7236C22.5375 18.0839 22.0433 18.2858 21.5285 18.2858C21.0137 18.2858 20.5194 18.0839 20.1518 17.7236L15.0384 12.6101C14.678 12.2425 14.4762 11.7483 14.4762 11.2335C14.4762 10.7187 14.678 10.2244 15.0384 9.85678L19.5618 5.33337" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <rect x="3.04762" y="24.381" width="25.9048" height="5.33333" rx="2.66667" fill="#E599A7"/>
+  <rect x="3.04762" y="24.381" width="25.9048" height="5.33333" rx="2.66667" fill="black"/>
   </svg>`,
   alignleft: `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="32" height="32" fill="#F5F5F5"/>
@@ -24,6 +24,8 @@ export const icons = {
   </g>
   </svg>
   `,
+  aligncenter: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-center"><line x1="21" x2="3" y1="6" y2="6"/><line x1="17" x2="7" y1="12" y2="12"/><line x1="19" x2="5" y1="18" y2="18"/></svg>`,
+  alignright: `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-align-right"><line x1="21" x2="3" y1="6" y2="6"/><line x1="21" x2="9" y1="12" y2="12"/><line x1="21" x2="7" y1="18" y2="18"/></svg>`,
   bold: `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M18 16C19.3261 16 20.5979 15.4732 21.5355 14.5355C22.4732 13.5979 23 12.3261 23 11C23 9.67392 22.4732 8.40215 21.5355 7.46447C20.5979 6.52678 19.3261 6 18 6H8V16" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M19.0769 26C20.3826 26 21.6348 25.4732 22.5581 24.5355C23.4813 23.5979 24 22.3261 24 21C24 19.6739 23.4813 18.4021 22.5581 17.4645C21.6348 16.5268 20.3826 16 19.0769 16H8V26H19.0769Z" stroke="black" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
