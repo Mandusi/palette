@@ -72,6 +72,12 @@ export default class ClothEditor {
 
     this.zoomSlider.addEventListener('input', this.zoomSliderHandler.bind(this))
     document.addEventListener('keydown', this.shortcutHandler.bind(this))
+
+    //TEST
+    const textBtn = document.getElementById('add-text')
+    textBtn.addEventListener('click', this.createText.bind(this))
+    const imgBtn = document.getElementById('add-img')
+    imgBtn.addEventListener('click', this.createImg.bind(this))
   }
 
   createCanvas() {
@@ -83,13 +89,16 @@ export default class ClothEditor {
       cornerSize: 8,
     })
 
-    this.rotateController()
-    this.deleteController()
-    this.duplicateController()
     this.canvas.setDimensions({
       height: this.canvasHeight,
       width: this.canvasWidth,
     })
+
+    this.rotateController()
+    this.deleteController()
+    this.duplicateController()
+    this.historyInit()
+    this.canvas.historyInit()
 
     this.style = document.createElement('style')
     document.body.append(this.style)
@@ -100,9 +109,6 @@ export default class ClothEditor {
         left: ${this.productImg.clientWidth * this.positionRatioX}px;
       }`
     this.productImgInitialHeight = this.productImg.clientHeight
-
-    this.createImg()
-    this.createText()
   }
 
   resizeCanvas() {
@@ -130,7 +136,7 @@ export default class ClothEditor {
     this.removeController()
     this.activeObject = this.canvas.getActiveObject()
 
-    if (this.canvas.getActiveObject().type === 'textbox') {
+    if (this.canvas.getActiveObject().type === 'text') {
       this.controller = new TextController(this.canvas)
     } else this.controller = new ImgController(this.canvas)
   }
@@ -157,7 +163,6 @@ export default class ClothEditor {
     }px)`
 
     this.resizeCanvas()
-    this.setBtnPositions()
   }
 
   createButton(id, icon) {
@@ -209,33 +214,19 @@ export default class ClothEditor {
   }
 
   shortcutHandler(e) {
-    // if (e.code === 'ArrowUp') {
-    //   this.activeObject.top++
-    //   this.canvas.renderAll()
-    // } else if (e.code === 'ArrowDown') console.log('down')
+    if (e.ctrlKey && e.code === 'KeyC') this.copy()
+    if (e.ctrlKey && e.code === 'KeyV') this.paste()
+    if (e.ctrlKey && e.code === 'KeyZ') this.canvas.undo()
+    if (e.code === 'ArrowUp') this.activeObject.top--
+    if (e.code === 'ArrowDown') this.activeObject.top++
+    if (e.code === 'ArrowLeft') this.activeObject.left--
+    if (e.code === 'ArrowRight') this.activeObject.left++
+    if (e.code === 'Delete') this.deleteHandler()
 
-    switch (e.code) {
-      case 'ArrowUp':
-        this.activeObject.top--
-        break
-      case 'ArrowDown':
-        this.activeObject.top++
-        break
-      case 'ArrowLeft':
-        this.activeObject.left--
-        break
-      case 'ArrowRight':
-        this.activeObject.left++
-        break
-        case '':
-          this.activeObject.top++
-          break
-    }
     this.canvas.renderAll()
   }
 
   rotateController() {
-    // ROTATE BUTTON
     const rotateIcon = `data:image/svg+xml;utf8,${icons.rotate}`
     const imgIcon = document.createElement('img')
     imgIcon.src = rotateIcon
@@ -246,6 +237,7 @@ export default class ClothEditor {
       offsetX: 0,
       offsetY: -20,
       cursorStyle: 'crosshair',
+      cornerSize: 20,
       actionHandler: fabric.controlsUtils.rotationWithSnapping,
       actionName: 'rotate',
       render: renderIcon,
@@ -253,7 +245,6 @@ export default class ClothEditor {
       withConnection: false,
     })
 
-    // Defining how the rendering action will be
     function renderIcon(ctx, left, top, styleOverride, fabricObject) {
       var size = fabricObject.cornerSize
       ctx.save()
@@ -281,7 +272,6 @@ export default class ClothEditor {
       withConnection: false,
     })
 
-    // Defining how the rendering action will be
     function renderIcon(ctx, left, top, styleOverride, fabricObject) {
       var size = fabricObject.cornerSize
       ctx.save()
@@ -309,7 +299,6 @@ export default class ClothEditor {
       withConnection: false,
     })
 
-    // Defining how the rendering action will be
     function renderIcon(ctx, left, top, styleOverride, fabricObject) {
       var size = fabricObject.cornerSize
       ctx.save()
@@ -317,6 +306,38 @@ export default class ClothEditor {
       ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle))
       ctx.drawImage(imgIcon, -size, -size, size * 2, size * 2)
       ctx.restore()
+    }
+  }
+
+  historyInit() {
+    fabric.Canvas.prototype.historyNext = () => {
+      return JSON.stringify(this.canvas.toDatalessJSON())
+    }
+
+    fabric.Canvas.prototype.historyInit = () => {
+      this.historyUndo = []
+      this.historyNextState = this.canvas.historyNext()
+      this.canvas.on({
+        'object:added': this.canvas.historySaveAction,
+        'object:removed': this.canvas.historySaveAction,
+        'object:modified': this.canvas.historySaveAction,
+      })
+    }
+
+    fabric.Canvas.prototype.historySaveAction = () => {
+      if (this.historyProcessing) return
+      const json = this.historyNextState
+      this.historyUndo.push(json)
+      this.historyNextState = this.canvas.historyNext()
+    }
+
+    fabric.Canvas.prototype.undo = () => {
+      this.historyProcessing = true
+      this.history = this.historyUndo.pop()
+      if (this.history) {
+        this.canvas.loadFromJSON(this.history).renderAll()
+      }
+      this.historyProcessing = false
     }
   }
 

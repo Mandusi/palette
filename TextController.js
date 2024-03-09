@@ -10,10 +10,7 @@ export default class TextController {
     this.textControllerContainer = document.createElement('div')
     this.textControllerContainer.setAttribute('id', 'mir-controller-container')
     this.mainContainerWrapper.append(this.textControllerContainer)
-
     this.text = this.canvas.getActiveObject()
-
-    // this.fontSizePicker = document.createDropDown()
 
     // CREATE BUTTONS
     this.createDropDown()
@@ -132,6 +129,7 @@ export default class TextController {
           .forEach((path) =>
             path.setAttribute('fill', this.colorPicker.color.hexString)
           )
+
         this.canvas.renderAll()
       })
     }
@@ -144,6 +142,7 @@ export default class TextController {
           .forEach((path) =>
             path.setAttribute('fill', this.colorPicker.color.hexString)
           )
+        this.canvas.historySaveAction()
         this.canvas.renderAll()
       })
     }
@@ -168,6 +167,7 @@ export default class TextController {
   }
 
   clearColorPicker() {
+    this.canvas.historySaveAction()
     this.Popup.remove()
     this.styleColorPicker.remove()
   }
@@ -246,6 +246,7 @@ export default class TextController {
         break
     }
     this.canvas.renderAll()
+    this.canvas.historySaveAction()
     this.activeBtnHandler()
   }
 

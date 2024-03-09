@@ -15,14 +15,19 @@ export default class ImgController {
     this.btnFlipY = this.createButton('flip-vertical', icons.flipVertical)
     this.btnLayerDown = this.createButton('layer-down', icons.layerDown)
     this.btnLayerUp = this.createButton('layer-up', icons.layerUp)
-    this.btnCenterY = this.createButton('center-horizontal', icons.centerHorizantal)
+    this.btnCenterY = this.createButton(
+      'center-horizontal',
+      icons.centerHorizantal
+    )
     this.btnCenterX = this.createButton('center-vertical', icons.centerVertical)
 
     this.btnFlipX.addEventListener('click', () => this.btnHandler('flipX'))
     this.btnFlipY.addEventListener('click', () => this.btnHandler('flipY'))
     this.btnCenterX.addEventListener('click', () => this.btnHandler('centerX'))
     this.btnCenterY.addEventListener('click', () => this.btnHandler('centerY'))
-    this.btnLayerDown.addEventListener('click', () => this.btnHandler('layerDown'))
+    this.btnLayerDown.addEventListener('click', () =>
+      this.btnHandler('layerDown')
+    )
     this.btnLayerUp.addEventListener('click', () => this.btnHandler('layerUp'))
   }
   createButton(id, icon) {
@@ -41,7 +46,9 @@ export default class ImgController {
     function isActive(btn, active) {
       btn
         ?.querySelectorAll('path')
-        .forEach((path) => path.setAttribute('stroke', active ? '#7929DE' : 'black'))
+        .forEach((path) =>
+          path.setAttribute('stroke', active ? '#7929DE' : 'black')
+        )
     }
 
     isActive(this.btnFlipX, object.flipX === true)
@@ -76,6 +83,7 @@ export default class ImgController {
         object.centerV()
         break
     }
+    this.canvas.historySaveAction()
     this.canvas.renderAll()
     this.activeBtnHandler()
   }
