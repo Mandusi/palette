@@ -3,14 +3,16 @@ import { icons } from './svgIcons.js'
 export default class TextController {
   constructor(canvas) {
     this.canvas = canvas
-    this.mainContainerWrapper = document.getElementById('mir-main-container-wrapper')
+    this.mainContainerWrapper = document.getElementById(
+      'mir-main-container-wrapper'
+    )
 
     this.textControllerContainer = document.createElement('div')
     this.textControllerContainer.setAttribute('id', 'mir-controller-container')
     this.mainContainerWrapper.append(this.textControllerContainer)
 
     this.text = this.canvas.getActiveObject()
-    console.log(this.text)
+
     // this.fontSizePicker = document.createDropDown()
 
     // CREATE BUTTONS
@@ -26,7 +28,10 @@ export default class TextController {
     this.btnFlipY = this.createButton('flip-vertical', icons.flipVertical)
     this.btnLayerDown = this.createButton('layer-down', icons.layerDown)
     this.btnLayerUp = this.createButton('layer-up', icons.layerUp)
-    this.btnCenterY = this.createButton('center-horizontal', icons.centerHorizantal)
+    this.btnCenterY = this.createButton(
+      'center-horizontal',
+      icons.centerHorizantal
+    )
     this.btnCenterX = this.createButton('center-vertical', icons.centerVertical)
 
     // BUTTON HANDLERS
@@ -41,13 +46,17 @@ export default class TextController {
     this.btnAlign.addEventListener('click', () => this.editText('align'))
     this.btnBold.addEventListener('click', () => this.editText('bold'))
     this.btnItalic.addEventListener('click', () => this.editText('italic'))
-    this.btnUnderline.addEventListener('click', () => this.editText('underline'))
+    this.btnUnderline.addEventListener('click', () =>
+      this.editText('underline')
+    )
     this.btnStrike.addEventListener('click', () => this.editText('strike'))
     this.btnFlipX.addEventListener('click', () => this.editText('flipX'))
     this.btnFlipY.addEventListener('click', () => this.editText('flipY'))
     this.btnCenterX.addEventListener('click', () => this.editText('centerX'))
     this.btnCenterY.addEventListener('click', () => this.editText('centerY'))
-    this.btnLayerDown.addEventListener('click', () => this.editText('layerDown'))
+    this.btnLayerDown.addEventListener('click', () =>
+      this.editText('layerDown')
+    )
     this.btnLayerUp.addEventListener('click', () => this.editText('layerUp'))
     this.selectEl.addEventListener('change', this.fontSizeHandler.bind(this))
   }
@@ -64,7 +73,9 @@ export default class TextController {
     if (id === 'highlight') {
       this.button
         .querySelectorAll('rect')
-        .forEach((path) => path.setAttribute('fill', this.text.textBackgroudColor))
+        .forEach((path) =>
+          path.setAttribute('fill', this.text.textBackgroudColor)
+        )
     }
     this.textControllerContainer.append(this.button)
     this.activeBtnHandler()
