@@ -15,10 +15,7 @@ export default class ImgController {
     this.btnFlipY = this.createButton('flip-vertical', icons.flipVertical)
     this.btnLayerDown = this.createButton('layer-down', icons.layerDown)
     this.btnLayerUp = this.createButton('layer-up', icons.layerUp)
-    this.btnCenterY = this.createButton(
-      'center-horizontal',
-      icons.centerHorizantal
-    )
+    this.btnCenterY = this.createButton('center-horizontal',icons.centerHorizantal)
     this.btnCenterX = this.createButton('center-vertical', icons.centerVertical)
 
     this.btnFlipX.addEventListener('click', () => this.btnHandler('flipX'))

@@ -15,7 +15,7 @@
   position: relative;
   background-size: cover;
   background-position: center;
-  height: 100%;
+  /* height: 100%; */
   width: fit-content;
 }
 
@@ -42,27 +42,26 @@
 }
 
 #mir-zoomslider {
-  width: 125px;
+  -webkit-appearance: none;
+  width: 135px;
 }
-
-input[type='range']::-webkit-slider-thumb {
-  -webkit-appearance: none !important;
-  width: 30px;
-  height: 30px;
-  background: black;
-  border: 2px solid black;
+#mir-zoomslider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  background: #fff;
   border-radius: 50%;
-  cursor: grab;
-}
-
-#mir-zoomslider::-webkit-slider-runnable-track {
-  height: 3px;
-  width: 12px;
-  background: #ccc;
-  border-radius: 16px;
+  margin-top: -6px;
+  border: 1px solid rgb(141, 133, 141);
   cursor: pointer;
 }
-
+#mir-zoomslider::-webkit-slider-runnable-track {
+  background: rgb(128, 128, 128);
+  border-radius: 5px;
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+}
 #mir-controller-container {
   position: absolute;
   top: 28px;
@@ -72,7 +71,7 @@ input[type='range']::-webkit-slider-thumb {
   display: flex;
   width: fit-content;
   height: fit-content;
-  padding: 10px;
+  padding: 10px 10px 1px 10px;
   align-items: flex-start;
 }
 
@@ -89,7 +88,7 @@ input[type='range']::-webkit-slider-thumb {
 
 #mir-font-size {
   width: 67px;
-  height: 36px;
+  height: 28px;
   border-radius: 8px;
   border: 1px solid #ccc;
   background: #fff;
@@ -100,6 +99,24 @@ input[type='range']::-webkit-slider-thumb {
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+}
+
+#preview-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mir-button {
@@ -116,7 +133,7 @@ input[type='range']::-webkit-slider-thumb {
   padding: 4px 0 0 0;
   background-color: #fff;
   border-radius: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #7b29de1e;
 }
 
 svg:active path {
