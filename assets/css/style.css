@@ -1,3 +1,11 @@
+body {
+  display: flex;
+}
+
+#root {
+  width: 50%;
+}
+
 #mir-main-container-wrapper {
   display: flex;
   position: relative;
@@ -16,7 +24,7 @@
   background-size: cover;
   background-position: center;
   /* height: 100%; */
-  width: fit-content;
+  /* width: fit-content; */
 }
 
 #mir-canvas-container-wrapper {
