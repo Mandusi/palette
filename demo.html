@@ -3,202 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cloth Editor Demo</title>
+    <title>ClothEditor Demo</title>
     <script src="./assets/js/fabric.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script type="module" src="./index.js"></script>
+    <script type="module" src="./demo.js" defer></script>
+
     <link rel="stylesheet" href="./assets/css/style.css" />
-
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif;
-      }
-
-      body {
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-        background-color: #f8f8f8;
-      }
-
-      /* Left Panel */
-      #left-panel {
-        width: 20%;
-        background-color: #fff;
-        border-right: 1px solid #ddd;
-        display: flex;
-        flex-direction: column;
-        padding: 10px;
-      }
-
-      .switch {
-        display: flex;
-        margin-bottom: 10px;
-      }
-
-      .switch button {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        background-color: #f0f0f0;
-        transition: background-color 0.2s;
-      }
-
-      .switch button.active {
-        background-color: #007bff;
-        color: white;
-      }
-
-      /* Text Fonts */
-      #text-fonts,
-      #image-list {
-        flex: 1;
-        overflow-y: auto;
-        display: none;
-      }
-
-      #text-fonts.active,
-      #image-list.active {
-        display: block;
-      }
-
-      .font-item {
-        padding: 10px;
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-
-      .font-item:hover {
-        background-color: #f5f5f5;
-      }
-
-      /* Image Items */
-      .image-item {
-        width: 100%;
-        padding: 5px;
-        cursor: pointer;
-      }
-
-      .image-item img {
-        width: 100%;
-        object-fit: contain;
-        background: transparent;
-      }
-
-      /* Canvas Area */
-      #root {
-        flex: 1;
-        background-color: #fafafa;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-      }
-    </style>
+    <link rel="stylesheet" href="./assets/css/demo.css" />
   </head>
+
   <body>
-    <!-- Left Panel -->
-    <div id="left-panel">
-      <div class="switch">
-        <button id="textBtn" class="active">Texts</button>
-        <button id="imageBtn">Images</button>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <div class="logo">
+        <img src="./assets/images/logo-small.png" alt="logo" />
       </div>
-
-      <!-- Fonts -->
-      <div id="text-fonts" class="active">
-        <div class="font-item" style="font-family: Arial">Arial</div>
-        <div class="font-item" style="font-family: 'Times New Roman'">
-          Times New Roman
-        </div>
-        <div class="font-item" style="font-family: Georgia">Georgia</div>
-        <div class="font-item" style="font-family: Verdana">Verdana</div>
-        <div class="font-item" style="font-family: Tahoma">Tahoma</div>
-        <div class="font-item" style="font-family: Courier New">
-          Courier New
-        </div>
-        <div class="font-item" style="font-family: Trebuchet MS">
-          Trebuchet MS
-        </div>
-        <div class="font-item" style="font-family: Impact">Impact</div>
-        <div class="font-item" style="font-family: 'Comic Sans MS'">
-          Comic Sans
-        </div>
-        <div class="font-item" style="font-family: Garamond">Garamond</div>
-        <div class="font-item" style="font-family: Helvetica">Helvetica</div>
-        <div class="font-item" style="font-family: 'Lucida Sans'">
-          Lucida Sans
-        </div>
-      </div>
-
-      <!-- Transparent Images -->
-      <div id="image-list">
-        <div class="image-item">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/512px-React-icon.svg.png"
-            alt="React"
-          />
-        </div>
-        <div class="image-item">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png"
-            alt="JS"
-          />
-        </div>
-        <div class="image-item">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png"
-            alt="Flutter"
-          />
-        </div>
-        <div class="image-item">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/6/64/Expressjs.png"
-            alt="Express"
-          />
-        </div>
-        <div class="image-item">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/9/99/Unofficial_JavaScript_logo_2.svg"
-            alt="NodeJS"
-          />
-        </div>
-        <div class="image-item">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png"
-            alt="JS2"
-          />
-        </div>
+      <!-- github link button as github icon -->
+      <div class="github-link">
+        <a href="https://github.com/Mandusi" target="_blank">
+          <img src="./assets/icons/github-icon.svg" alt="GitHub" />
+        </a>
       </div>
     </div>
 
-    <!-- Canvas Root -->
+    <!-- Editor -->
+
+    <!-- Left Panel -->
+    <div class="panel">
+      <!-- Toggle Buttons -->
+      <div class="toggle-buttons">
+        <button id="textBtn" class="active">
+          <img src="./assets/icons/text-align-right.svg" /><span>Text</span>
+        </button>
+        <button id="imageBtn">
+          <img src="./assets/icons/image-square.svg" /><span>Image</span>
+        </button>
+        <button id="uploadBtn">
+          <img src="./assets/icons/arrow-line-up.svg" /><span>Upload</span>
+        </button>
+
+        <div id="scissors-animation-container">
+          <img
+            src="./assets/icons/scissors-closed-icon.svg"
+            class="active"
+            id="scissors1"
+          />
+          <img src="./assets/icons/scissors-open-icon.svg" id="scissors2" />
+        </div>
+      </div>
+
+      <!-- Scrollable Content -->
+      <div class="content" id="panelContent">
+        <div class="textPanel" id="textContainer"></div>
+        <div class="imagePanel" id="imageContainer"></div>
+        <div class="uploadPanel"></div>
+      </div>
+    </div>
+
+    <!-- ClothEditor Root -->
     <div id="root"></div>
-
-    <script>
-      const textBtn = document.getElementById("textBtn");
-      const imageBtn = document.getElementById("imageBtn");
-      const textFonts = document.getElementById("text-fonts");
-      const imageList = document.getElementById("image-list");
-
-      textBtn.addEventListener("click", () => {
-        textBtn.classList.add("active");
-        imageBtn.classList.remove("active");
-        textFonts.classList.add("active");
-        imageList.classList.remove("active");
-      });
-
-      imageBtn.addEventListener("click", () => {
-        imageBtn.classList.add("active");
-        textBtn.classList.remove("active");
-        imageList.classList.add("active");
-        textFonts.classList.remove("active");
-      });
-    </script>
   </body>
 </html>

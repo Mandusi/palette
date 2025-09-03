@@ -1,9 +1,9 @@
-import ClothEditor from "./clotheditor1.js";
+import ClothEditor from "./clotheditor.js";
 
 const root = document.querySelector("#root");
 
 const product = {
-  src: "./assets/icons/shirt-1.png",
+  src: "./assets/product-images/shirt-1.png",
   width: 844,
   height: 957,
   canvas: {
@@ -14,7 +14,7 @@ const product = {
   },
 };
 const product1 = {
-  src: "./assets/icons/shirt-2.png",
+  src: "./assets/product-images/shirt-2.png",
   width: 860,
   height: 1078,
   canvas: {
@@ -25,7 +25,7 @@ const product1 = {
   },
 };
 const product2 = {
-  src: "./assets/icons/bag-1.jpg",
+  src: "./assets/product-images/bag-1.jpg",
   width: 691,
   height: 691,
   canvas: {

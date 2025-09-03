@@ -65,9 +65,55 @@ export default class ClothEditor {
     );
     this.canvasWidth = Math.round(this.canvasHeight / this.canvasHWRatio);
 
+    this.imageContainer = document.getElementById("imageContainer");
+    this.textContainer = document.getElementById("textContainer");
+
     // LISTENERS
     this.productImg.onload = this.createCanvas.bind(this);
     window.onresize = this.resizeCanvas.bind(this);
+
+    this.imageContainer.addEventListener("dblclick", (e) => {
+      if (e.target.tagName.toLowerCase() === "img") {
+        const imgSrc = e.target.src;
+
+        // Add image to Fabric canvas
+        fabric.Image.fromURL(imgSrc, (img) => {
+          img.set({
+            left: 100,
+            top: 100,
+            scaleX: 100 / img.width,
+            scaleY: 100 / img.width,
+          });
+          this.canvas.add(img);
+          this.canvas.setActiveObject(img); // select the new image
+          this.canvas.renderAll();
+        });
+      }
+    });
+
+    this.textContainer.addEventListener("dblclick", (e) => {
+      if (e.target.tagName.toLowerCase() === "input") {
+        const input = e.target;
+        const textValue = input.value;
+        const fontFamily = window.getComputedStyle(input).fontFamily;
+
+        // Create Fabric text object
+        const fabricText = new fabric.Text(textValue, {
+          left: this.canvas.width / 2,
+          top: this.canvas.height / 2,
+          fontFamily: fontFamily,
+          fontSize: 30,
+          originX: "center", // center text horizontally
+          originY: "center", // center text vertically
+          fill: "#000", // default color
+        });
+
+        this.canvas.add(fabricText);
+        this.canvas.setActiveObject(fabricText);
+        this.canvas.renderAll();
+      }
+    });
+
     // SELECTION HANDLERS TO DISPLAY THE CONTROLLER FOR SELECTED TYPE
     this.canvas.on("selection:created", this.selectionHandler.bind(this));
     this.canvas.on("selection:updated", this.selectionHandler.bind(this));
@@ -80,11 +126,11 @@ export default class ClothEditor {
     document.addEventListener("keydown", this.shortcutHandler.bind(this));
 
     //TEST
-    const textBtn = document.getElementById("add-text");
-    textBtn.addEventListener("click", this.createText.bind(this));
-    const imgBtn = document.getElementById("add-img");
-    imgBtn.addEventListener("click", this.createImg.bind(this));
-    this.previewBtn.addEventListener("click", this.exportDesign.bind(this));
+    // const textBtn = document.getElementById("add-text");
+    // textBtn.addEventListener("click", this.createText.bind(this));
+    // const imgBtn = document.getElementById("add-img");
+    // imgBtn.addEventListener("click", this.createImg.bind(this));
+    // this.previewBtn.addEventListener("click", this.exportDesign.bind(this));
   }
 
   createCanvas() {
@@ -388,17 +434,6 @@ export default class ClothEditor {
   }
 
   //CREATE IMG OBJECT
-  createImg() {
-    const img = new window.fabric.Image.fromURL(
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/2048px-Instagram_logo_2022.svg.png",
-      function (img) {
-        img.scaleToHeight(100);
-        // img.setControlsVisibility({ mtr: false })
-        this.canvas.centerObject(img);
-        this.canvas.add(img);
-      }.bind(this)
-    );
-  }
 
   // CREATE TEXT OBJECT
   createText() {
