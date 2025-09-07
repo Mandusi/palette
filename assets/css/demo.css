@@ -13,10 +13,8 @@ body {
 }
 
 .navbar {
-  /* background-color: #ffc115; */
   padding-left: 20px;
   padding-right: 20px;
-  border-bottom: 1px solid #ddd;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -43,6 +41,12 @@ body {
   width: 100%;
 }
 
+.github-link img {
+  width: 36px;
+  height: 36px;
+  transition: filter 0.2s;
+}
+
 /* Left Panel */
 .panel {
   margin-top: 72px;
@@ -52,6 +56,30 @@ body {
   border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  /* sidebar for small screens where it shrinks at the bottom when dragged in y direction */
+}
+@media (max-width: 768px) {
+  .panel.closed {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    height: 72px;
+    margin-top: 96px;
+    top: calc(100vh - 168px);
+  }
+
+  .panel.open {
+    position: absolute;
+    left: 50%;
+    height: calc(100% - 96px);
+    transform: translateX(-50%);
+    margin-top: 96px;
+    z-index: 10;
+  }
 }
 
 /* Toggle Buttons */
