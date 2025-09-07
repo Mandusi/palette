@@ -1,5 +1,5 @@
 import { renderTexts, renderImages, renderUploads } from "./render.js";
-import { startAnimation } from "./animation.js";
+import { startScissorsAnimation } from "./animation.js";
 
 const panel = document.querySelector(".panel");
 const panelContent = document.getElementById("panelContent");
@@ -11,7 +11,7 @@ textBtn.addEventListener("click", () => {
   textBtn.classList.add("active");
   imageBtn.classList.remove("active");
   uploadBtn.classList.remove("active");
-  startAnimation(14);
+  startScissorsAnimation(14);
   document.querySelector(".textPanel").innerHTML = "";
   renderTexts();
 });
@@ -20,7 +20,7 @@ imageBtn.addEventListener("click", () => {
   imageBtn.classList.add("active");
   textBtn.classList.remove("active");
   uploadBtn.classList.remove("active");
-  startAnimation(134);
+  startScissorsAnimation(134);
   document.querySelector(".imagePanel").innerHTML = "";
   renderImages();
 });
@@ -29,7 +29,7 @@ uploadBtn.addEventListener("click", () => {
   uploadBtn.classList.add("active");
   imageBtn.classList.remove("active");
   textBtn.classList.remove("active");
-  startAnimation(260);
+  startScissorsAnimation(260);
   document.querySelector(".uploadPanel").innerHTML = "";
   renderUploads();
 });

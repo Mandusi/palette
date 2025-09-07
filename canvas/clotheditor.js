@@ -124,13 +124,7 @@ export default class ClothEditor {
       this.zoomSliderHandler.bind(this)
     );
     document.addEventListener("keydown", this.shortcutHandler.bind(this));
-
-    //TEST
-    // const textBtn = document.getElementById("add-text");
-    // textBtn.addEventListener("click", this.createText.bind(this));
-    // const imgBtn = document.getElementById("add-img");
-    // imgBtn.addEventListener("click", this.createImg.bind(this));
-    // this.previewBtn.addEventListener("click", this.exportDesign.bind(this));
+    this.previewBtn.addEventListener("click", this.exportDesign.bind(this));
   }
 
   createCanvas() {
@@ -150,8 +144,7 @@ export default class ClothEditor {
     this.rotateController();
     this.deleteController();
     this.duplicateController();
-    this.historyInit();
-    this.canvas.historyInit();
+    this.historyInit(this.canvas);
 
     this.canvas.selectionBorderColor = "#7929DE";
     this.canvas.selectionColor = "#7b29de1e";
@@ -375,13 +368,14 @@ export default class ClothEditor {
     }
   }
 
-  historyInit() {
+  historyInit(canvas) {
     fabric.Canvas.prototype.historyNext = function () {
       return JSON.stringify(this.toDatalessJSON());
     };
 
     fabric.Canvas.prototype.historyInit = function () {
       this.historyUndo = [];
+      this.historyProcessing = false;
       this.historyNextState = this.historyNext();
       this.on({
         "object:added": this.historySaveAction,
@@ -392,24 +386,28 @@ export default class ClothEditor {
 
     fabric.Canvas.prototype.historySaveAction = function () {
       if (this.historyProcessing) return;
+
       const json = this.historyNextState;
-      this.historyUndo.push(json);
-      if (this.historyUndo.length > 40) this.historyUndo.shift();
-      this.historyNextState = this.historyNext();
+      if (json !== this.historyNext()) {
+        this.historyUndo.push(json);
+        if (this.historyUndo.length > 40) this.historyUndo.shift();
+        this.historyNextState = this.historyNext();
+      }
     };
 
     fabric.Canvas.prototype.undo = function () {
+      if (this.historyUndo.length === 0) return;
       this.historyProcessing = true;
       const history = this.historyUndo.pop();
-      if (history) {
-        this.loadFromJSON(history, () => {
-          this.renderAll();
-          this.historyProcessing = false;
-        });
-      } else {
+      this.loadFromJSON(history, () => {
+        this.renderAll();
+        this.historyNextState = this.historyNext(); // ✅ keep states synced
         this.historyProcessing = false;
-      }
+      });
     };
+
+    // Initialize history for the passed canvas
+    canvas.historyInit();
   }
 
   async exportDesign() {
@@ -431,13 +429,5 @@ export default class ClothEditor {
     link.click();
     this.canvas.setActiveObject(this.activeObject);
     this.canvas.renderAll();
-  }
-
-  //CREATE IMG OBJECT
-
-  // CREATE TEXT OBJECT
-  createText() {
-    const text = new window.fabric.Text("text");
-    this.canvas.add(text);
   }
 }

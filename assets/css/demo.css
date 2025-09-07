@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Alice&family=Bubblegum+Sans&family=Crimson+Pro&family=Gabarito&family=Geologica&family=Kalam&family=Lora&family=Luckiest+Guy&family=Rajdhani&family=Sniglet&family=Sora&family=Mulish&family=Ceviche+One&family=Vollkorn&family=Merienda&family=Raleway+Dots&family=Kenia&family=DM+Sans&family=Caudex&family=Playfair+Display&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap");
 
 * {
   margin: 0;
@@ -41,10 +42,100 @@ body {
   width: 100%;
 }
 
-.github-link img {
-  width: 36px;
-  height: 36px;
-  transition: filter 0.2s;
+/* Prompt Section Styling */
+.prompt-section {
+  position: relative;
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+
+/* Wrapper to control animations */
+.prompt-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Hide all prompts by default */
+.prompt-wrapper p {
+  position: absolute;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-in-out;
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-family: "Bodoni Moda", serif;
+  font-style: italic;
+}
+
+/* Show the active prompt */
+.prompt-wrapper p.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Style the fading-out prompt */
+.prompt-wrapper p.exit {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+/* Default GitHub button styles */
+.github-link a {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: box-shadow 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+/* Pulsing highlight */
+.github-pulse {
+  animation: githubPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 10px #6e40c9, 0 0 10px #6e40c9, 0 0 10px #6e40c9;
+}
+
+@keyframes githubPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(110, 64, 201, 0.3),
+      0 0 10px rgba(110, 64, 201, 0.3);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(140, 95, 245, 0.7),
+      0 0 35px rgba(140, 95, 245, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 5px rgba(110, 64, 201, 0.3),
+      0 0 10px rgba(110, 64, 201, 0.3);
+  }
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.github-link a img {
+  width: 44px;
+  height: 44px;
 }
 
 /* Left Panel */
@@ -99,7 +190,7 @@ body {
   cursor: pointer;
   background-color: white;
   border-bottom: 1px solid #ddd;
-  font-weight: normal;
+  font-weight: bold;
   transition: background 0.2s;
 }
 
@@ -109,7 +200,12 @@ body {
 
 .toggle-buttons button.active {
   color: #8e4fdb;
-  font-weight: bold;
+}
+
+.toggle-buttons button.active img {
+  /* turn svg #8e4fdb; */
+  filter: invert(39%) sepia(83%) saturate(249%) hue-rotate(236deg)
+    brightness(95%) contrast(90%);
 }
 
 #scissors-animation-container {
